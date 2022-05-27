@@ -1,0 +1,43 @@
+swagger: 2.0
+info:
+  version: 1.0.0
+  title: Validar Senha
+servers:
+  - url: http://localhost:8080
+paths:
+  /validarSenha:
+    post:
+      summary: Valida senha
+      consumes:
+        - application/json;charset=utf-8
+      produces:
+        - application/json;charset=utf-8
+      parameters:
+        - in: body
+          name: senha
+          description: senha
+          required: true
+          schema:
+            $ref: "#/definitions/Senha"
+      responses: 
+        200:
+          description: Senha valida ou invalida
+          schema:
+            $ref: "#/definitions/SenhaValidada"
+definitions:
+  Senha:
+    required:
+    - senha
+    type: object
+    properties:
+      senha:
+        type: string
+        description: Senha a ser validada
+        minLength: 9
+        maxLength: 255
+  SenhaValidada:
+    type: object
+    properties:
+      senhavalida:
+        type: boolean
+        description: Senha valida ou invalida
