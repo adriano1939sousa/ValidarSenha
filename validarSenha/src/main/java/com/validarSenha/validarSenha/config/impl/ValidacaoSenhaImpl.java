@@ -20,35 +20,39 @@ public class ValidacaoSenhaImpl implements ValidacaoSenha {
 
 	@Override
 	public Boolean validar(String senha) {
-		if(validarTamanhoMinimo(senha) && validarDigito(senha) 
-			&& validarTamanhoMaximo(senha) && validarCaracterRepetido(senha)
-			&& validarLetraMaiuscula(senha) && validarLetraMinuscula(senha)
-			&& validarCaracterEspecial(senha)) {
-			return true;
+		try {
+			if(validarTamanhoMinimo(senha) && validarDigito(senha) 
+				&& validarTamanhoMaximo(senha) && validarCaracterRepetido(senha)
+				&& validarLetraMaiuscula(senha) && validarLetraMinuscula(senha)
+				&& validarCaracterEspecial(senha)) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
 
 	// nove ou mais caracteres
-	private boolean validarTamanhoMinimo(String senha) {
+	private boolean validarTamanhoMinimo(String senha) throws Exception {
 		logger.info("validarTamanhoMinimo - inicio validacao de senha.");
 		if (senha.length() < TAMANHO_MINIMO) {
-			return false;
-		}
-		return true;
+			throw new Exception("Tamanho mínimo da senha deve ser: "+ TAMANHO_MINIMO);			
+		} 
+			return true;
 	}
 	
 	// nove ou mais caracteres
-		private boolean validarTamanhoMaximo(String senha) {
+		private boolean validarTamanhoMaximo(String senha)throws Exception {
 			logger.info("validarTamanhoMaximo - inicio validacao de senha.");
 			if (senha.length() > TAMANHO_MAXIMO) {
-				return false;
+				throw new Exception("Tamanho máximo da senha deve ser: "+ TAMANHO_MAXIMO);
 			}
 			return true;
 		}
 
 	// Ao menos 1 digito
-	private boolean validarDigito(String senha) {
+	private boolean validarDigito(String senha)throws Exception {
 		logger.info("validarDigito - inicio validacao de senha.");
 		char[] chars = senha.toCharArray();
 		for (Character c : chars) {
@@ -56,11 +60,11 @@ public class ValidacaoSenhaImpl implements ValidacaoSenha {
 				return true;
 			}
 		}
-		return false;
+		throw new Exception("A senha deve conter no mínimo 1 digito ");
 	}
 
 	// Ao menos 1 letra maiúscula
-	private boolean validarLetraMaiuscula(String senha) {
+	private boolean validarLetraMaiuscula(String senha)throws Exception {
 		logger.info("validarLetraMaiuscula - inicio validacao de senha.");
 		char[] chars = senha.toCharArray();
 		for (Character c : chars) {
@@ -68,11 +72,11 @@ public class ValidacaoSenhaImpl implements ValidacaoSenha {
 				return true;
 			}
 		}
-		return false;
+		throw new Exception("A senha deve conter no mínimo uma letra Maiuscula");
 	}
 
 	// Ao menos 1 letra minúscula
-	private boolean validarLetraMinuscula(String senha) {
+	private boolean validarLetraMinuscula(String senha)throws Exception {
 		logger.info("validarLetraMinuscula - inicio validacao de senha.");
 		char[] chars = senha.toCharArray();
 		for (Character c : chars) {
@@ -80,12 +84,12 @@ public class ValidacaoSenhaImpl implements ValidacaoSenha {
 				return true;
 			}
 		}
-		return false;
+		throw new Exception("A senha deve conter no mínimo uma letra Minúscula");
 
 	}
 
 	// Ao menos 1 caracter especial ( !@#$%^&*()-+ )
-	private boolean validarCaracterEspecial(String senha) {
+	private boolean validarCaracterEspecial(String senha)throws Exception {
 		logger.info("validarCaracterEspecial - inicio validacao de senha.");
 		char [] chars = "!@#$%^&*()-+".toCharArray();
 		for (Character c : chars) {
@@ -94,18 +98,18 @@ public class ValidacaoSenhaImpl implements ValidacaoSenha {
 			}
 		}
         
-		return false;
+		throw new Exception("A senha deve conter no mínimo um caracter especial do tipo '!@#$%^&*()-+'");
 
 	}
 
 	// Não possuir caracteres repetidos dentro do conjunto
-	private boolean validarCaracterRepetido(String senha) {
+	private boolean validarCaracterRepetido(String senha) throws Exception{
 		logger.info("validarCaracterRepetido - inicio validacao de senha.");
 		
 		Set<Character> chars = new HashSet<>();
 		for (Character character : senha.toCharArray()) {
 			if (!chars.add(character)) {
-				return false;
+				throw new Exception("A senha não deve conter itens repetidos");
 			}
 		}
 		return true;
